@@ -1,5 +1,4 @@
 package com.br.fatecrl.conta.controller;
-
 import java.net.URI;
 import java.util.List;
 
@@ -16,18 +15,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.br.fatecrl.conta.model.Conta;
-import com.br.fatecrl.conta.service.ContaService;
+import com.br.fatecrl.conta.model.PessoaJuridica;
+import com.br.fatecrl.conta.service.PessoaJuridicaService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+@RequestMapping("/pessoa-juridica")
 @RestController
-@RequestMapping("/contas")
-public class ContaController implements IController<Conta>{
-	@Autowired
-	private ContaService service;
+public class PessoaJuridicaController implements IController<PessoaJuridica> {
+    @Autowired
+	private PessoaJuridicaService service;
 	
 	@Override
 	@GetMapping(produces = "application/json")
@@ -41,17 +40,17 @@ public class ContaController implements IController<Conta>{
 			//           , content = {@Content(mediaType = "application/json")} 
 			)
 	})
-	@Operation(summary = "Retorna a lista de contas")
-	public ResponseEntity<List<Conta>> getAll(){
+	@Operation(summary = "Retorna a lista de pessoas juridicas")
+	public ResponseEntity<List<PessoaJuridica>> getAll(){
 		return ResponseEntity.ok(service.findAll());
 	}
 	
 	@Override
 	@GetMapping(value = "/{id}", produces = "application/json")
-	public ResponseEntity<Conta> get(@PathVariable("id") Long id) {
-		Conta conta = service.findById(id);
-		if (conta != null) {
-			return ResponseEntity.ok(conta);
+	public ResponseEntity<PessoaJuridica> get(@PathVariable("id") Long id) {
+		PessoaJuridica pessoaJuridica = service.findById(id);
+		if (pessoaJuridica != null) {
+			return ResponseEntity.ok(pessoaJuridica);
 			//HTTP 200 OK
 		}
 		return ResponseEntity.notFound().build();
@@ -59,42 +58,42 @@ public class ContaController implements IController<Conta>{
 	
 	@Override
 	@PostMapping
-	@Operation(summary = "Cria uma conta")
-	public ResponseEntity<Conta> post(@RequestBody Conta conta){
-		service.create(conta);
+	@Operation(summary = "Cria uma pessoa juridica")
+	public ResponseEntity<PessoaJuridica> post(@RequestBody PessoaJuridica pessoaJuridica){
+		service.create(pessoaJuridica);
 
 		URI location = ServletUriComponentsBuilder
 						.fromCurrentRequest()
 						.path("/{id}")
-						.buildAndExpand(conta.getId())
+						.buildAndExpand(pessoaJuridica.getId())
 						.toUri();
-		return ResponseEntity.created(location).body(conta);
+		return ResponseEntity.created(location).body(pessoaJuridica);
 	}
 	
 	@Override
 	@PutMapping
-	@Operation(summary = "Atualiza uma conta")
-	public ResponseEntity<Conta> put(@RequestBody Conta conta){
-		if (service.update(conta)) {
-			return ResponseEntity.ok(conta);
+	@Operation(summary = "Atualiza uma pessoa juridica")
+	public ResponseEntity<PessoaJuridica> put(@RequestBody PessoaJuridica pessoaJuridica){
+		if (service.update(pessoaJuridica)) {
+			return ResponseEntity.ok(pessoaJuridica);
 		}
 		return ResponseEntity.notFound().build();
 	}
 
 	@Override
 	@PatchMapping
-	@Operation(summary = "Atualiza uma conta")
-	public ResponseEntity<Conta> patch(@RequestBody Conta conta){
-		if (service.update(conta)) {
-			return ResponseEntity.ok(conta);
+	@Operation(summary = "Atualiza uma pessoa juridica")
+	public ResponseEntity<PessoaJuridica> patch(@RequestBody PessoaJuridica pessoaJuridica){
+		if (service.update(pessoaJuridica)) {
+			return ResponseEntity.ok(pessoaJuridica);
 		}
 		return ResponseEntity.notFound().build();
 	}	
 	
 	@Override
-	@DeleteMapping(value = "/{idconta}")
-	@Operation(summary = "Exclui uma conta")
-	public ResponseEntity<Conta> delete(@PathVariable("id") Long id){
+	@DeleteMapping(value = "/{id}")
+	@Operation(summary = "Exclui uma pessoa juridica")
+	public ResponseEntity<PessoaJuridica> delete(@PathVariable("id") Long id){
 		if (service.delete(id)) {
 			return ResponseEntity.noContent().build();
 		}

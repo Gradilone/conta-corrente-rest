@@ -16,18 +16,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.br.fatecrl.conta.model.Conta;
-import com.br.fatecrl.conta.service.ContaService;
+import com.br.fatecrl.conta.model.PessoaFisica;
+import com.br.fatecrl.conta.service.PessoaFisicaService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+@RequestMapping("/pessoa-fisica")
 @RestController
-@RequestMapping("/contas")
-public class ContaController implements IController<Conta>{
-	@Autowired
-	private ContaService service;
+public class PessoaFisicaController implements IController<PessoaFisica> {
+    @Autowired
+	private PessoaFisicaService service;
 	
 	@Override
 	@GetMapping(produces = "application/json")
@@ -41,17 +41,17 @@ public class ContaController implements IController<Conta>{
 			//           , content = {@Content(mediaType = "application/json")} 
 			)
 	})
-	@Operation(summary = "Retorna a lista de contas")
-	public ResponseEntity<List<Conta>> getAll(){
+	@Operation(summary = "Retorna a lista de pessoas físicas")
+	public ResponseEntity<List<PessoaFisica>> getAll(){
 		return ResponseEntity.ok(service.findAll());
 	}
 	
 	@Override
 	@GetMapping(value = "/{id}", produces = "application/json")
-	public ResponseEntity<Conta> get(@PathVariable("id") Long id) {
-		Conta conta = service.findById(id);
-		if (conta != null) {
-			return ResponseEntity.ok(conta);
+	public ResponseEntity<PessoaFisica> get(@PathVariable("id") Long id) {
+		PessoaFisica pessoaFisica = service.findById(id);
+		if (pessoaFisica != null) {
+			return ResponseEntity.ok(pessoaFisica);
 			//HTTP 200 OK
 		}
 		return ResponseEntity.notFound().build();
@@ -59,45 +59,46 @@ public class ContaController implements IController<Conta>{
 	
 	@Override
 	@PostMapping
-	@Operation(summary = "Cria uma conta")
-	public ResponseEntity<Conta> post(@RequestBody Conta conta){
-		service.create(conta);
+	@Operation(summary = "Cria uma pessoa física")
+	public ResponseEntity<PessoaFisica> post(@RequestBody PessoaFisica pessoaFisica){
+		service.create(pessoaFisica);
 
 		URI location = ServletUriComponentsBuilder
 						.fromCurrentRequest()
 						.path("/{id}")
-						.buildAndExpand(conta.getId())
+						.buildAndExpand(pessoaFisica.getId())
 						.toUri();
-		return ResponseEntity.created(location).body(conta);
+		return ResponseEntity.created(location).body(pessoaFisica);
 	}
 	
 	@Override
 	@PutMapping
-	@Operation(summary = "Atualiza uma conta")
-	public ResponseEntity<Conta> put(@RequestBody Conta conta){
-		if (service.update(conta)) {
-			return ResponseEntity.ok(conta);
+	@Operation(summary = "Atualiza uma pessoa física")
+	public ResponseEntity<PessoaFisica> put(@RequestBody PessoaFisica pessoaFisica){
+		if (service.update(pessoaFisica)) {
+			return ResponseEntity.ok(pessoaFisica);
 		}
 		return ResponseEntity.notFound().build();
 	}
 
 	@Override
 	@PatchMapping
-	@Operation(summary = "Atualiza uma conta")
-	public ResponseEntity<Conta> patch(@RequestBody Conta conta){
-		if (service.update(conta)) {
-			return ResponseEntity.ok(conta);
+	@Operation(summary = "Atualiza uma pessoa física")
+	public ResponseEntity<PessoaFisica> patch(@RequestBody PessoaFisica pessoaFisica){
+		if (service.update(pessoaFisica)) {
+			return ResponseEntity.ok(pessoaFisica);
 		}
 		return ResponseEntity.notFound().build();
 	}	
 	
 	@Override
-	@DeleteMapping(value = "/{idconta}")
-	@Operation(summary = "Exclui uma conta")
-	public ResponseEntity<Conta> delete(@PathVariable("id") Long id){
+	@DeleteMapping(value = "/{id}")
+	@Operation(summary = "Exclui uma pessoa física")
+	public ResponseEntity<PessoaFisica> delete(@PathVariable("id") Long id){
 		if (service.delete(id)) {
 			return ResponseEntity.noContent().build();
 		}
 		return ResponseEntity.notFound().build();
 	}	
+
 }

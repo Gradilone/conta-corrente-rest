@@ -30,6 +30,7 @@ public class PessoaFisica extends Cliente {
 
 	public PessoaFisica() { }
 
+
     // getters e setters
 }
 
